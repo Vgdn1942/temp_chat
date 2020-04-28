@@ -19,8 +19,8 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-	// ИМЯ СЕРВЕРА (url зарегистрированного нами сайта)
-	// например http://l29340eb.bget.ru
+	// РРњРЇ РЎР•Р Р’Р•Р Рђ (url Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅРЅРѕРіРѕ РЅР°РјРё СЃР°Р№С‚Р°)
+	// РЅР°РїСЂРёРјРµСЂ http://l29340eb.bget.ru
 	String server_name = "http://l29340eb.bget.ru";
 
 	Spinner spinner_author, spinner_client;
@@ -32,35 +32,35 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		Log.i("chat", "+ MainActivity - запуск приложения");
+		Log.i("chat", "+ MainActivity - Р·Р°РїСѓСЃРє РїСЂРёР»РѕР¶РµРЅРёСЏ");
 
 		open_chat_btn = (Button) findViewById(R.id.open_chat_btn);
 		open_chat_reverce_btn = (Button) findViewById(R.id.open_chat_reverce_btn);
 		delete_server_chat = (Button) findViewById(R.id.delete_server_chat);
 
-		// запустим FoneService
+		// Р·Р°РїСѓСЃС‚РёРј FoneService
 		this.startService(new Intent(this, FoneService.class));
 
-		// заполним 2 выпадающих меню для выбора автора и получателя сообщения
-		// 5 мужских и 5 женских имен
-		// установим слушателей
+		// Р·Р°РїРѕР»РЅРёРј 2 РІС‹РїР°РґР°СЋС‰РёС… РјРµРЅСЋ РґР»СЏ РІС‹Р±РѕСЂР° Р°РІС‚РѕСЂР° Рё РїРѕР»СѓС‡Р°С‚РµР»СЏ СЃРѕРѕР±С‰РµРЅРёСЏ
+		// 5 РјСѓР¶СЃРєРёС… Рё 5 Р¶РµРЅСЃРєРёС… РёРјРµРЅ
+		// СѓСЃС‚Р°РЅРѕРІРёРј СЃР»СѓС€Р°С‚РµР»РµР№
 		spinner_author = (Spinner) findViewById(R.id.spinner_author);
 		spinner_client = (Spinner) findViewById(R.id.spinner_client);
 
 		spinner_author.setAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, new String[] { "Петя",
-						"Вася", "Коля", "Андрей", "Сергей", "Оля", "Лена",
-						"Света", "Марина", "Наташа" }));
+				android.R.layout.simple_spinner_item, new String[] { "РџРµС‚СЏ",
+						"Р’Р°СЃСЏ", "РљРѕР»СЏ", "РђРЅРґСЂРµР№", "РЎРµСЂРіРµР№", "РћР»СЏ", "Р›РµРЅР°",
+						"РЎРІРµС‚Р°", "РњР°СЂРёРЅР°", "РќР°С‚Р°С€Р°" }));
 		spinner_client.setAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, new String[] { "Петя",
-						"Вася", "Коля", "Андрей", "Сергей", "Оля", "Лена",
-						"Света", "Марина", "Наташа" }));
+				android.R.layout.simple_spinner_item, new String[] { "РџРµС‚СЏ",
+						"Р’Р°СЃСЏ", "РљРѕР»СЏ", "РђРЅРґСЂРµР№", "РЎРµСЂРіРµР№", "РћР»СЏ", "Р›РµРЅР°",
+						"РЎРІРµС‚Р°", "РњР°СЂРёРЅР°", "РќР°С‚Р°С€Р°" }));
 		spinner_client.setSelection(5);
 
-		open_chat_btn.setText("Открыть чат: "
+		open_chat_btn.setText("РћС‚РєСЂС‹С‚СЊ С‡Р°С‚: "
 				+ spinner_author.getSelectedItem().toString() + " > "
 				+ spinner_client.getSelectedItem().toString());
-		open_chat_reverce_btn.setText("Открыть чат: "
+		open_chat_reverce_btn.setText("РћС‚РєСЂС‹С‚СЊ С‡Р°С‚: "
 				+ spinner_client.getSelectedItem().toString() + " > "
 				+ spinner_author.getSelectedItem().toString());
 
@@ -72,11 +72,11 @@ public class MainActivity extends Activity {
 
 						author = spinner_author.getSelectedItem().toString();
 
-						open_chat_btn.setText("Открыть чат: "
+						open_chat_btn.setText("РћС‚РєСЂС‹С‚СЊ С‡Р°С‚: "
 								+ spinner_author.getSelectedItem().toString()
 								+ " > "
 								+ spinner_client.getSelectedItem().toString());
-						open_chat_reverce_btn.setText("Открыть чат: "
+						open_chat_reverce_btn.setText("РћС‚РєСЂС‹С‚СЊ С‡Р°С‚: "
 								+ spinner_client.getSelectedItem().toString()
 								+ " > "
 								+ spinner_author.getSelectedItem().toString());
@@ -94,11 +94,11 @@ public class MainActivity extends Activity {
 
 						client = spinner_client.getSelectedItem().toString();
 
-						open_chat_btn.setText("Открыть чат: "
+						open_chat_btn.setText("РћС‚РєСЂС‹С‚СЊ С‡Р°С‚: "
 								+ spinner_author.getSelectedItem().toString()
 								+ " > "
 								+ spinner_client.getSelectedItem().toString());
-						open_chat_reverce_btn.setText("Открыть чат: "
+						open_chat_reverce_btn.setText("РћС‚РєСЂС‹С‚СЊ С‡Р°С‚: "
 								+ spinner_client.getSelectedItem().toString()
 								+ " > "
 								+ spinner_author.getSelectedItem().toString());
@@ -109,16 +109,16 @@ public class MainActivity extends Activity {
 				});
 	}
 
-	// откроем чат с выбранным автором и получателем
+	// РѕС‚РєСЂРѕРµРј С‡Р°С‚ СЃ РІС‹Р±СЂР°РЅРЅС‹Рј Р°РІС‚РѕСЂРѕРј Рё РїРѕР»СѓС‡Р°С‚РµР»РµРј
 	public void open_chat(View v) {
-		// быстрая проверка
+		// Р±С‹СЃС‚СЂР°СЏ РїСЂРѕРІРµСЂРєР°
 		if (author.equals(client)) {
-			// если автор и получатель одинаковы
-			// чат не открываем
+			// РµСЃР»Рё Р°РІС‚РѕСЂ Рё РїРѕР»СѓС‡Р°С‚РµР»СЊ РѕРґРёРЅР°РєРѕРІС‹
+			// С‡Р°С‚ РЅРµ РѕС‚РєСЂС‹РІР°РµРј
 			Toast.makeText(this, "author = client !", Toast.LENGTH_SHORT)
 					.show();
 		} else {
-			// откроем нужный чат author > client
+			// РѕС‚РєСЂРѕРµРј РЅСѓР¶РЅС‹Р№ С‡Р°С‚ author > client
 			Intent intent = new Intent(MainActivity.this, ChatActivity.class);
 			intent.putExtra("author", author);
 			intent.putExtra("client", client);
@@ -126,16 +126,16 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	// откроем чат с выбранным автором и получателем, только наоборот
+	// РѕС‚РєСЂРѕРµРј С‡Р°С‚ СЃ РІС‹Р±СЂР°РЅРЅС‹Рј Р°РІС‚РѕСЂРѕРј Рё РїРѕР»СѓС‡Р°С‚РµР»РµРј, С‚РѕР»СЊРєРѕ РЅР°РѕР±РѕСЂРѕС‚
 	public void open_chat_reverce(View v) {
-		// быстрая проверка
+		// Р±С‹СЃС‚СЂР°СЏ РїСЂРѕРІРµСЂРєР°
 		if (author.equals(client)) {
-			// если автор и получатель одинаковы
-			// чат не открываем
+			// РµСЃР»Рё Р°РІС‚РѕСЂ Рё РїРѕР»СѓС‡Р°С‚РµР»СЊ РѕРґРёРЅР°РєРѕРІС‹
+			// С‡Р°С‚ РЅРµ РѕС‚РєСЂС‹РІР°РµРј
 			Toast.makeText(this, "author = client !", Toast.LENGTH_SHORT)
 					.show();
 		} else {
-			// откроем нужный чат client > author
+			// РѕС‚РєСЂРѕРµРј РЅСѓР¶РЅС‹Р№ С‡Р°С‚ client > author
 			Intent intent = new Intent(MainActivity.this, ChatActivity.class);
 			intent.putExtra("author", client);
 			intent.putExtra("client", author);
@@ -143,23 +143,23 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	// отправим запрос на сервер о удалении таблицы с чатами
+	// РѕС‚РїСЂР°РІРёРј Р·Р°РїСЂРѕСЃ РЅР° СЃРµСЂРІРµСЂ Рѕ СѓРґР°Р»РµРЅРёРё С‚Р°Р±Р»РёС†С‹ СЃ С‡Р°С‚Р°РјРё
 	public void delete_server_chats(View v) {
 
-		Log.i("chat", "+ MainActivity - запрос на удаление чата с сервера");
+		Log.i("chat", "+ MainActivity - Р·Р°РїСЂРѕСЃ РЅР° СѓРґР°Р»РµРЅРёРµ С‡Р°С‚Р° СЃ СЃРµСЂРІРµСЂР°");
 
 		delete_server_chat.setEnabled(false);
-		delete_server_chat.setText("Запрос отправлен. Ожидайте...");
+		delete_server_chat.setText("Р—Р°РїСЂРѕСЃ РѕС‚РїСЂР°РІР»РµРЅ. РћР¶РёРґР°Р№С‚Рµ...");
 
 		DELETEfromChat delete_from_chat = new DELETEfromChat();
 		delete_from_chat.execute();
 	}
 
-	// удалим локальную таблицу чатов
-	// и создадим такуюже новую
+	// СѓРґР°Р»РёРј Р»РѕРєР°Р»СЊРЅСѓСЋ С‚Р°Р±Р»РёС†Сѓ С‡Р°С‚РѕРІ
+	// Рё СЃРѕР·РґР°РґРёРј С‚Р°РєСѓСЋР¶Рµ РЅРѕРІСѓСЋ
 	public void delete_local_chats(View v) {
 
-		Log.i("chat", "+ MainActivity - удаление чата с этого устройства");
+		Log.i("chat", "+ MainActivity - СѓРґР°Р»РµРЅРёРµ С‡Р°С‚Р° СЃ СЌС‚РѕРіРѕ СѓСЃС‚СЂРѕР№СЃС‚РІР°");
 
 		SQLiteDatabase chatDBlocal;
 		chatDBlocal = openOrCreateDatabase("chatDBlocal.db",
@@ -169,13 +169,13 @@ public class MainActivity extends Activity {
 				.execSQL("CREATE TABLE IF NOT EXISTS chat (_id integer primary key autoincrement, author, client, data, text)");
 
 		Toast.makeText(getApplicationContext(),
-				"Чат на этом устройстве удален!", Toast.LENGTH_SHORT).show();
+				"Р§Р°С‚ РЅР° СЌС‚РѕРј СѓСЃС‚СЂРѕР№СЃС‚РІРµ СѓРґР°Р»РµРЅ!", Toast.LENGTH_SHORT).show();
 	}
 
-	// отправим запрос на сервер о удалении таблицы с чатами
-	// если он пройдет - таблица будет удалена
-	// если не пройдет (например нет интернета или сервер недоступен)
-	// - покажет сообщение
+	// РѕС‚РїСЂР°РІРёРј Р·Р°РїСЂРѕСЃ РЅР° СЃРµСЂРІРµСЂ Рѕ СѓРґР°Р»РµРЅРёРё С‚Р°Р±Р»РёС†С‹ СЃ С‡Р°С‚Р°РјРё
+	// РµСЃР»Рё РѕРЅ РїСЂРѕР№РґРµС‚ - С‚Р°Р±Р»РёС†Р° Р±СѓРґРµС‚ СѓРґР°Р»РµРЅР°
+	// РµСЃР»Рё РЅРµ РїСЂРѕР№РґРµС‚ (РЅР°РїСЂРёРјРµСЂ РЅРµС‚ РёРЅС‚РµСЂРЅРµС‚Р° РёР»Рё СЃРµСЂРІРµСЂ РЅРµРґРѕСЃС‚СѓРїРµРЅ)
+	// - РїРѕРєР°Р¶РµС‚ СЃРѕРѕР±С‰РµРЅРёРµ
 	private class DELETEfromChat extends AsyncTask<Void, Void, Integer> {
 
 		Integer res;
@@ -186,17 +186,17 @@ public class MainActivity extends Activity {
 			try {
 				URL url = new URL(server_name + "/chat.php?action=delete");
 				conn = (HttpURLConnection) url.openConnection();
-				conn.setConnectTimeout(10000); // ждем 10сек
+				conn.setConnectTimeout(10000); // Р¶РґРµРј 10СЃРµРє
 				conn.setRequestMethod("POST");
 				conn.setRequestProperty("User-Agent", "Mozilla/5.0");
 				conn.connect();
 				res = conn.getResponseCode();
-				Log.i("chat", "+ MainActivity - ответ сервера (200 = ОК): "
+				Log.i("chat", "+ MainActivity - РѕС‚РІРµС‚ СЃРµСЂРІРµСЂР° (200 = РћРљ): "
 						+ res.toString());
 
 			} catch (Exception e) {
 				Log.i("chat",
-						"+ MainActivity - ответ сервера ОШИБКА: "
+						"+ MainActivity - РѕС‚РІРµС‚ СЃРµСЂРІРµСЂР° РћРЁРР‘РљРђ: "
 								+ e.getMessage());
 			} finally {
 				conn.disconnect();
@@ -210,23 +210,23 @@ public class MainActivity extends Activity {
 			try {
 				if (result == 200) {
 					Toast.makeText(getApplicationContext(),
-							"Чат на сервере удален!", Toast.LENGTH_SHORT)
+							"Р§Р°С‚ РЅР° СЃРµСЂРІРµСЂРµ СѓРґР°Р»РµРЅ!", Toast.LENGTH_SHORT)
 							.show();
 				}
 			} catch (Exception e) {
 				Toast.makeText(getApplicationContext(),
-						"Ошибка выполнения запроса.", Toast.LENGTH_SHORT)
+						"РћС€РёР±РєР° РІС‹РїРѕР»РЅРµРЅРёСЏ Р·Р°РїСЂРѕСЃР°.", Toast.LENGTH_SHORT)
 						.show();
 			} finally {
-				// сделаем кнопку активной
+				// СЃРґРµР»Р°РµРј РєРЅРѕРїРєСѓ Р°РєС‚РёРІРЅРѕР№
 				delete_server_chat.setEnabled(true);
-				delete_server_chat.setText("Удалить все чаты на сервере!");
+				delete_server_chat.setText("РЈРґР°Р»РёС‚СЊ РІСЃРµ С‡Р°С‚С‹ РЅР° СЃРµСЂРІРµСЂРµ!");
 			}
 		}
 	}
 
 	public void onBackPressed() {
-		Log.i("chat", "+ MainActivity - выход из приложения");
+		Log.i("chat", "+ MainActivity - РІС‹С…РѕРґ РёР· РїСЂРёР»РѕР¶РµРЅРёСЏ");
 		finish();
 	}
 }

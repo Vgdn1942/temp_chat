@@ -23,8 +23,8 @@ import android.util.Log;
 
 public class FoneService extends Service {
 
-	// ИМЯ СЕРВЕРА (url зарегистрированного нами сайта)
-	// например http://l29340eb.bget.ru
+	// РРњРЇ РЎР•Р Р’Р•Р Рђ (url Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅРЅРѕРіРѕ РЅР°РјРё СЃР°Р№С‚Р°)
+	// РЅР°РїСЂРёРјРµСЂ http://l29340eb.bget.ru
 	String server_name = "http://l29340eb.bget.ru";
 	
 	SQLiteDatabase chatDBlocal;
@@ -32,8 +32,8 @@ public class FoneService extends Service {
 	Cursor cursor;
 	Thread thr;
 	ContentValues new_mess;
-	Long last_time; // время последней записи в БД, отсекаем по нему что нам
-					// тянуть с сервера, а что уже есть
+	Long last_time; // РІСЂРµРјСЏ РїРѕСЃР»РµРґРЅРµР№ Р·Р°РїРёСЃРё РІ Р‘Р”, РѕС‚СЃРµРєР°РµРј РїРѕ РЅРµРјСѓ С‡С‚Рѕ РЅР°Рј
+					// С‚СЏРЅСѓС‚СЊ СЃ СЃРµСЂРІРµСЂР°, Р° С‡С‚Рѕ СѓР¶Рµ РµСЃС‚СЊ
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -42,16 +42,16 @@ public class FoneService extends Service {
 
 	public void onStart(Intent intent, int startId) {
 
-		Log.i("chat", "+ FoneService - запуск сервиса");
+		Log.i("chat", "+ FoneService - Р·Р°РїСѓСЃРє СЃРµСЂРІРёСЃР°");
 
 		chatDBlocal = openOrCreateDatabase("chatDBlocal.db",
 				Context.MODE_PRIVATE, null);
 		chatDBlocal
 				.execSQL("CREATE TABLE IF NOT EXISTS chat (_id integer primary key autoincrement, author, client, data, text)");
 
-		// создадим и покажем notification
-		// это позволит стать сервису "бессмертным"
-		// и будет визуально видно в трее
+		// СЃРѕР·РґР°РґРёРј Рё РїРѕРєР°Р¶РµРј notification
+		// СЌС‚Рѕ РїРѕР·РІРѕР»РёС‚ СЃС‚Р°С‚СЊ СЃРµСЂРІРёСЃСѓ "Р±РµСЃСЃРјРµСЂС‚РЅС‹Рј"
+		// Рё Р±СѓРґРµС‚ РІРёР·СѓР°Р»СЊРЅРѕ РІРёРґРЅРѕ РІ С‚СЂРµРµ
 		Intent iN = new Intent(getApplicationContext(), MainActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 				| Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -67,7 +67,7 @@ public class FoneService extends Service {
 								.getResources(), R.drawable.ic_launcher))
 				.setAutoCancel(true)
 				.setContentTitle(getResources().getString(R.string.app_name))
-				.setContentText("работаю...");
+				.setContentText("СЂР°Р±РѕС‚Р°СЋ...");
 
 		Notification notification = bI.build();
 		startForeground(101, notification);
@@ -75,47 +75,47 @@ public class FoneService extends Service {
 		startLoop();
 	}
 
-	// запуск потока, внутри которого будет происходить
-	// регулярное соединение с сервером для чтения новых
-	// сообщений.
-	// если сообщения найдены - отправим броадкаст для обновления
-	// ListView в ChatActivity
+	// Р·Р°РїСѓСЃРє РїРѕС‚РѕРєР°, РІРЅСѓС‚СЂРё РєРѕС‚РѕСЂРѕРіРѕ Р±СѓРґРµС‚ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ
+	// СЂРµРіСѓР»СЏСЂРЅРѕРµ СЃРѕРµРґРёРЅРµРЅРёРµ СЃ СЃРµСЂРІРµСЂРѕРј РґР»СЏ С‡С‚РµРЅРёСЏ РЅРѕРІС‹С…
+	// СЃРѕРѕР±С‰РµРЅРёР№.
+	// РµСЃР»Рё СЃРѕРѕР±С‰РµРЅРёСЏ РЅР°Р№РґРµРЅС‹ - РѕС‚РїСЂР°РІРёРј Р±СЂРѕР°РґРєР°СЃС‚ РґР»СЏ РѕР±РЅРѕРІР»РµРЅРёСЏ
+	// ListView РІ ChatActivity
 	private void startLoop() {
 
 		thr = new Thread(new Runnable() {
 
-			// ansver = ответ на запрос
-			// lnk = линк с параметрами
+			// ansver = РѕС‚РІРµС‚ РЅР° Р·Р°РїСЂРѕСЃ
+			// lnk = Р»РёРЅРє СЃ РїР°СЂР°РјРµС‚СЂР°РјРё
 			String ansver, lnk;
 
 			public void run() {
 
-				while (true) { // стартуем бесконечный цикл
+				while (true) { // СЃС‚Р°СЂС‚СѓРµРј Р±РµСЃРєРѕРЅРµС‡РЅС‹Р№ С†РёРєР»
 
-					// глянем локальную БД на наличие сообщщений чата
+					// РіР»СЏРЅРµРј Р»РѕРєР°Р»СЊРЅСѓСЋ Р‘Р” РЅР° РЅР°Р»РёС‡РёРµ СЃРѕРѕР±С‰С‰РµРЅРёР№ С‡Р°С‚Р°
 					cursor = chatDBlocal.rawQuery(
 							"SELECT * FROM chat ORDER BY data", null);
 
-					// если какие-либо сообщения есть - формируем запрос
-					// по которому получим только новые сообщения
+					// РµСЃР»Рё РєР°РєРёРµ-Р»РёР±Рѕ СЃРѕРѕР±С‰РµРЅРёСЏ РµСЃС‚СЊ - С„РѕСЂРјРёСЂСѓРµРј Р·Р°РїСЂРѕСЃ
+					// РїРѕ РєРѕС‚РѕСЂРѕРјСѓ РїРѕР»СѓС‡РёРј С‚РѕР»СЊРєРѕ РЅРѕРІС‹Рµ СЃРѕРѕР±С‰РµРЅРёСЏ
 					if (cursor.moveToLast()) {
 						last_time = cursor.getLong(cursor
 								.getColumnIndex("data"));
 						lnk = server_name + "/chat.php?action=select&data="
 								+ last_time.toString();
 
-						// если сообщений в БД нет - формируем запрос
-						// по которому получим всё
+						// РµСЃР»Рё СЃРѕРѕР±С‰РµРЅРёР№ РІ Р‘Р” РЅРµС‚ - С„РѕСЂРјРёСЂСѓРµРј Р·Р°РїСЂРѕСЃ
+						// РїРѕ РєРѕС‚РѕСЂРѕРјСѓ РїРѕР»СѓС‡РёРј РІСЃС‘
 					} else {
 						lnk = server_name + "/chat.php?action=select";
 					}
 
 					cursor.close();
 
-					// создаем соединение ---------------------------------->
+					// СЃРѕР·РґР°РµРј СЃРѕРµРґРёРЅРµРЅРёРµ ---------------------------------->
 					try {
 						Log.i("chat",
-								"+ FoneService --------------- ОТКРОЕМ СОЕДИНЕНИЕ");
+								"+ FoneService --------------- РћРўРљР РћР•Рњ РЎРћР•Р”РРќР•РќРР•");
 
 						conn = (HttpURLConnection) new URL(lnk)
 								.openConnection();
@@ -127,9 +127,9 @@ public class FoneService extends Service {
 						conn.connect();
 
 					} catch (Exception e) {
-						Log.i("chat", "+ FoneService ошибка: " + e.getMessage());
+						Log.i("chat", "+ FoneService РѕС€РёР±РєР°: " + e.getMessage());
 					}
-					// получаем ответ ---------------------------------->
+					// РїРѕР»СѓС‡Р°РµРј РѕС‚РІРµС‚ ---------------------------------->
 					try {
 						InputStream is = conn.getInputStream();
 						BufferedReader br = new BufferedReader(
@@ -140,34 +140,34 @@ public class FoneService extends Service {
 							sb.append(bfr_st);
 						}
 
-						Log.i("chat", "+ FoneService - полный ответ сервера:\n"
+						Log.i("chat", "+ FoneService - РїРѕР»РЅС‹Р№ РѕС‚РІРµС‚ СЃРµСЂРІРµСЂР°:\n"
 								+ sb.toString());
-						// сформируем ответ сервера в string
-						// обрежем в полученном ответе все, что находится за "]"
-						// это необходимо, т.к. json ответ приходит с мусором
-						// и если этот мусор не убрать - будет невалидным
+						// СЃС„РѕСЂРјРёСЂСѓРµРј РѕС‚РІРµС‚ СЃРµСЂРІРµСЂР° РІ string
+						// РѕР±СЂРµР¶РµРј РІ РїРѕР»СѓС‡РµРЅРЅРѕРј РѕС‚РІРµС‚Рµ РІСЃРµ, С‡С‚Рѕ РЅР°С…РѕРґРёС‚СЃСЏ Р·Р° "]"
+						// СЌС‚Рѕ РЅРµРѕР±С…РѕРґРёРјРѕ, С‚.Рє. json РѕС‚РІРµС‚ РїСЂРёС…РѕРґРёС‚ СЃ РјСѓСЃРѕСЂРѕРј
+						// Рё РµСЃР»Рё СЌС‚РѕС‚ РјСѓСЃРѕСЂ РЅРµ СѓР±СЂР°С‚СЊ - Р±СѓРґРµС‚ РЅРµРІР°Р»РёРґРЅС‹Рј
 						ansver = sb.toString();
 						ansver = ansver.substring(0, ansver.indexOf("]") + 1);
 
-						is.close(); // закроем поток
-						br.close(); // закроем буфер
+						is.close(); // Р·Р°РєСЂРѕРµРј РїРѕС‚РѕРє
+						br.close(); // Р·Р°РєСЂРѕРµРј Р±СѓС„РµСЂ
 
 					} catch (Exception e) {
-						Log.i("chat", "+ FoneService ошибка: " + e.getMessage());
+						Log.i("chat", "+ FoneService РѕС€РёР±РєР°: " + e.getMessage());
 					} finally {
 						conn.disconnect();
 						Log.i("chat",
-								"+ FoneService --------------- ЗАКРОЕМ СОЕДИНЕНИЕ");
+								"+ FoneService --------------- Р—РђРљР РћР•Рњ РЎРћР•Р”РРќР•РќРР•");
 					}
 
-					// запишем ответ в БД ---------------------------------->
+					// Р·Р°РїРёС€РµРј РѕС‚РІРµС‚ РІ Р‘Р” ---------------------------------->
 					if (ansver != null && !ansver.trim().equals("")) {
 
 						Log.i("chat",
-								"+ FoneService ---------- ответ содержит JSON:");
+								"+ FoneService ---------- РѕС‚РІРµС‚ СЃРѕРґРµСЂР¶РёС‚ JSON:");
 
 						try {
-							// ответ превратим в JSON массив
+							// РѕС‚РІРµС‚ РїСЂРµРІСЂР°С‚РёРј РІ JSON РјР°СЃСЃРёРІ
 							JSONArray ja = new JSONArray(ansver);
 							JSONObject jo;
 
@@ -175,7 +175,7 @@ public class FoneService extends Service {
 
 							while (i < ja.length()) {
 
-								// разберем JSON массив построчно
+								// СЂР°Р·Р±РµСЂРµРј JSON РјР°СЃСЃРёРІ РїРѕСЃС‚СЂРѕС‡РЅРѕ
 								jo = ja.getJSONObject(i);
 
 								Log.i("chat",
@@ -186,40 +186,40 @@ public class FoneService extends Service {
 												+ " | " + jo.getLong("data")
 												+ " | " + jo.getString("text"));
 
-								// создадим новое сообщение
+								// СЃРѕР·РґР°РґРёРј РЅРѕРІРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ
 								new_mess = new ContentValues();
 								new_mess.put("author", jo.getString("author"));
 								new_mess.put("client", jo.getString("client"));
 								new_mess.put("data", jo.getLong("data"));
 								new_mess.put("text", jo.getString("text"));
-								// запишем новое сообщение в БД
+								// Р·Р°РїРёС€РµРј РЅРѕРІРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РІ Р‘Р”
 								chatDBlocal.insert("chat", null, new_mess);
 								new_mess.clear();
 
 								i++;
 
-								// отправим броадкаст для ChatActivity
-								// если она открыта - она обновить ListView
+								// РѕС‚РїСЂР°РІРёРј Р±СЂРѕР°РґРєР°СЃС‚ РґР»СЏ ChatActivity
+								// РµСЃР»Рё РѕРЅР° РѕС‚РєСЂС‹С‚Р° - РѕРЅР° РѕР±РЅРѕРІРёС‚СЊ ListView
 								sendBroadcast(new Intent(
 										"by.andreidanilevich.action.UPDATE_ListView"));
 							}
 						} catch (Exception e) {
-							// если ответ сервера не содержит валидный JSON
+							// РµСЃР»Рё РѕС‚РІРµС‚ СЃРµСЂРІРµСЂР° РЅРµ СЃРѕРґРµСЂР¶РёС‚ РІР°Р»РёРґРЅС‹Р№ JSON
 							Log.i("chat",
-									"+ FoneService ---------- ошибка ответа сервера:\n"
+									"+ FoneService ---------- РѕС€РёР±РєР° РѕС‚РІРµС‚Р° СЃРµСЂРІРµСЂР°:\n"
 											+ e.getMessage());
 						}
 					} else {
-						// если ответ сервера пустой
+						// РµСЃР»Рё РѕС‚РІРµС‚ СЃРµСЂРІРµСЂР° РїСѓСЃС‚РѕР№
 						Log.i("chat",
-								"+ FoneService ---------- ответ не содержит JSON!");
+								"+ FoneService ---------- РѕС‚РІРµС‚ РЅРµ СЃРѕРґРµСЂР¶РёС‚ JSON!");
 					}
 
 					try {
 						Thread.sleep(15000);
 					} catch (Exception e) {
 						Log.i("chat",
-								"+ FoneService - ошибка процесса: "
+								"+ FoneService - РѕС€РёР±РєР° РїСЂРѕС†РµСЃСЃР°: "
 										+ e.getMessage());
 					}
 				}

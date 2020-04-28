@@ -11,9 +11,9 @@ public class AutoRun extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
 
-			// получили boot_completed - запустили FoneService
+			// РїРѕР»СѓС‡РёР»Рё boot_completed - Р·Р°РїСѓСЃС‚РёР»Рё FoneService
 			context.startService(new Intent(context, FoneService.class));
-			Log.i("chat", "+ AutoRun - отработал");
+			Log.i("chat", "+ AutoRun - РѕС‚СЂР°Р±РѕС‚Р°Р»");
 		}
 	}
 }

@@ -28,32 +28,32 @@ import android.widget.Toast;
 
 public class ChatActivity extends Activity {
 
-	// ИМЯ СЕРВЕРА (url зарегистрированного нами сайта)
-	// например http://l29340eb.bget.ru
+	// РРњРЇ РЎР•Р Р’Р•Р Рђ (url Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅРЅРѕРіРѕ РЅР°РјРё СЃР°Р№С‚Р°)
+	// РЅР°РїСЂРёРјРµСЂ http://l29340eb.bget.ru
 	String server_name = "http://l29340eb.bget.ru";
 
-	ListView lv; // полоса сообщений
+	ListView lv; // РїРѕР»РѕСЃР° СЃРѕРѕР±С‰РµРЅРёР№
 	EditText et;
 	Button bt;
 	SQLiteDatabase chatDBlocal;
 	String author, client;
-	INSERTtoChat insert_to_chat; // класс отправляет новое сообщение на сервер
-	UpdateReceiver upd_res; // класс ждет сообщение от сервиса и получив его -
-							// обновляет ListView
+	INSERTtoChat insert_to_chat; // РєР»Р°СЃСЃ РѕС‚РїСЂР°РІР»СЏРµС‚ РЅРѕРІРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РЅР° СЃРµСЂРІРµСЂ
+	UpdateReceiver upd_res; // РєР»Р°СЃСЃ Р¶РґРµС‚ СЃРѕРѕР±С‰РµРЅРёРµ РѕС‚ СЃРµСЂРІРёСЃР° Рё РїРѕР»СѓС‡РёРІ РµРіРѕ -
+							// РѕР±РЅРѕРІР»СЏРµС‚ ListView
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat);
 
-		// получим 2 переменные по которым будем отбирать инфу из БД:
-		// author - от чьего имени идет чат
-		// client - с кем чатимся
+		// РїРѕР»СѓС‡РёРј 2 РїРµСЂРµРјРµРЅРЅС‹Рµ РїРѕ РєРѕС‚РѕСЂС‹Рј Р±СѓРґРµРј РѕС‚Р±РёСЂР°С‚СЊ РёРЅС„Сѓ РёР· Р‘Р”:
+		// author - РѕС‚ С‡СЊРµРіРѕ РёРјРµРЅРё РёРґРµС‚ С‡Р°С‚
+		// client - СЃ РєРµРј С‡Р°С‚РёРјСЃСЏ
 		Intent intent = getIntent();
 		author = intent.getStringExtra("author");
 		client = intent.getStringExtra("client");
 
-		Log.i("chat", "+ ChatActivity - открыт author = " + author
+		Log.i("chat", "+ ChatActivity - РѕС‚РєСЂС‹С‚ author = " + author
 				+ " | client = " + client);
 
 		lv = (ListView) findViewById(R.id.lv);
@@ -65,7 +65,7 @@ public class ChatActivity extends Activity {
 		chatDBlocal
 				.execSQL("CREATE TABLE IF NOT EXISTS chat (_id integer primary key autoincrement, author, client, data, text)");
 
-		// Создаём и регистрируем широковещательный приёмник
+		// РЎРѕР·РґР°С‘Рј Рё СЂРµРіРёСЃС‚СЂРёСЂСѓРµРј С€РёСЂРѕРєРѕРІРµС‰Р°С‚РµР»СЊРЅС‹Р№ РїСЂРёС‘РјРЅРёРє
 
 		upd_res = new UpdateReceiver();
 		registerReceiver(upd_res, new IntentFilter(
@@ -74,7 +74,7 @@ public class ChatActivity extends Activity {
 		create_lv();
 	}
 
-	// обновим lv = заполним нужные позиции в lv информацией из БД
+	// РѕР±РЅРѕРІРёРј lv = Р·Р°РїРѕР»РЅРёРј РЅСѓР¶РЅС‹Рµ РїРѕР·РёС†РёРё РІ lv РёРЅС„РѕСЂРјР°С†РёРµР№ РёР· Р‘Р”
 	@SuppressLint("SimpleDateFormat")
 	public void create_lv() {
 
@@ -82,18 +82,18 @@ public class ChatActivity extends Activity {
 				"SELECT * FROM chat WHERE author = '" + author
 						+ "' OR author = '" + client + "' ORDER BY data", null);
 		if (cursor.moveToFirst()) {
-			// если в базе есть элементы соответствующие
-			// нашим критериям отбора
+			// РµСЃР»Рё РІ Р±Р°Р·Рµ РµСЃС‚СЊ СЌР»РµРјРµРЅС‚С‹ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРµ
+			// РЅР°С€РёРј РєСЂРёС‚РµСЂРёСЏРј РѕС‚Р±РѕСЂР°
 
-			// создадим массив, создадим hashmap и заполним его результатом
+			// СЃРѕР·РґР°РґРёРј РјР°СЃСЃРёРІ, СЃРѕР·РґР°РґРёРј hashmap Рё Р·Р°РїРѕР»РЅРёРј РµРіРѕ СЂРµР·СѓР»СЊС‚Р°С‚РѕРј
 			// cursor
 			ArrayList<HashMap<String, Object>> mList = new ArrayList<HashMap<String, Object>>();
 			HashMap<String, Object> hm;
 
 			do {
-				// мое сообщение !!!
-				// если автор сообщения = автор
-				// и получатель сообщения = клиент
+				// РјРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ !!!
+				// РµСЃР»Рё Р°РІС‚РѕСЂ СЃРѕРѕР±С‰РµРЅРёСЏ = Р°РІС‚РѕСЂ
+				// Рё РїРѕР»СѓС‡Р°С‚РµР»СЊ СЃРѕРѕР±С‰РµРЅРёСЏ = РєР»РёРµРЅС‚
 				if (cursor.getString(cursor.getColumnIndex("author")).equals(
 						author)
 						&& cursor.getString(cursor.getColumnIndex("client"))
@@ -113,9 +113,9 @@ public class ChatActivity extends Activity {
 
 				}
 
-				// сообщение мне !!!!!!!
-				// если автор сообщения = клиент
-				// и если получатель сообщения = автор
+				// СЃРѕРѕР±С‰РµРЅРёРµ РјРЅРµ !!!!!!!
+				// РµСЃР»Рё Р°РІС‚РѕСЂ СЃРѕРѕР±С‰РµРЅРёСЏ = РєР»РёРµРЅС‚
+				// Рё РµСЃР»Рё РїРѕР»СѓС‡Р°С‚РµР»СЊ СЃРѕРѕР±С‰РµРЅРёСЏ = Р°РІС‚РѕСЂ
 				if (cursor.getString(cursor.getColumnIndex("author")).equals(
 						client)
 						&& cursor.getString(cursor.getColumnIndex("client"))
@@ -137,7 +137,7 @@ public class ChatActivity extends Activity {
 
 			} while (cursor.moveToNext());
 
-			// покажем lv
+			// РїРѕРєР°Р¶РµРј lv
 			SimpleAdapter adapter = new SimpleAdapter(getApplicationContext(),
 					mList, R.layout.list, new String[] { "list_author",
 							"list_author_time", "list_client",
@@ -152,30 +152,30 @@ public class ChatActivity extends Activity {
 		}
 
 		Log.i("chat",
-				"+ ChatActivity ======================== обновили поле чата");
+				"+ ChatActivity ======================== РѕР±РЅРѕРІРёР»Рё РїРѕР»Рµ С‡Р°С‚Р°");
 
 	}
 
 	public void send(View v) {
-		// запишем наше новое сообщение
-		// вначале проверим на пустоту
+		// Р·Р°РїРёС€РµРј РЅР°С€Рµ РЅРѕРІРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ
+		// РІРЅР°С‡Р°Р»Рµ РїСЂРѕРІРµСЂРёРј РЅР° РїСѓСЃС‚РѕС‚Сѓ
 
 		if (!et.getText().toString().trim().equals("")) {
 
-			// кнопку сделаем неактивной
+			// РєРЅРѕРїРєСѓ СЃРґРµР»Р°РµРј РЅРµР°РєС‚РёРІРЅРѕР№
 			bt.setEnabled(false);
 
-			// если чтото есть - действуем!
+			// РµСЃР»Рё С‡С‚РѕС‚Рѕ РµСЃС‚СЊ - РґРµР№СЃС‚РІСѓРµРј!
 			insert_to_chat = new INSERTtoChat();
 			insert_to_chat.execute();
 
 		} else {
-			// если ничего нет - нечего и писать
+			// РµСЃР»Рё РЅРёС‡РµРіРѕ РЅРµС‚ - РЅРµС‡РµРіРѕ Рё РїРёСЃР°С‚СЊ
 			et.setText("");
 		}
 	}
 
-	// отправим сообщение на сервер
+	// РѕС‚РїСЂР°РІРёРј СЃРѕРѕР±С‰РµРЅРёРµ РЅР° СЃРµСЂРІРµСЂ
 
 	private class INSERTtoChat extends AsyncTask<Void, Void, Integer> {
 
@@ -186,7 +186,7 @@ public class ChatActivity extends Activity {
 
 			try {
 
-				// соберем линк для передачи новой строки
+				// СЃРѕР±РµСЂРµРј Р»РёРЅРє РґР»СЏ РїРµСЂРµРґР°С‡Рё РЅРѕРІРѕР№ СЃС‚СЂРѕРєРё
 				String post_url = server_name
 						+ "/chat.php?action=insert&author="
 						+ URLEncoder.encode(author, "UTF-8")
@@ -197,26 +197,26 @@ public class ChatActivity extends Activity {
 								"UTF-8");
 
 				Log.i("chat",
-						"+ ChatActivity - отправляем на сервер новое сообщение: "
+						"+ ChatActivity - РѕС‚РїСЂР°РІР»СЏРµРј РЅР° СЃРµСЂРІРµСЂ РЅРѕРІРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ: "
 								+ et.getText().toString().trim());
 
 				URL url = new URL(post_url);
 				conn = (HttpURLConnection) url.openConnection();
-				conn.setConnectTimeout(10000); // ждем 10сек
+				conn.setConnectTimeout(10000); // Р¶РґРµРј 10СЃРµРє
 				conn.setRequestMethod("POST");
 				conn.setRequestProperty("User-Agent", "Mozilla/5.0");
 				conn.connect();
 
 				res = conn.getResponseCode();
-				Log.i("chat", "+ ChatActivity - ответ сервера (200 - все ОК): "
+				Log.i("chat", "+ ChatActivity - РѕС‚РІРµС‚ СЃРµСЂРІРµСЂР° (200 - РІСЃРµ РћРљ): "
 						+ res.toString());
 
 			} catch (Exception e) {
 				Log.i("chat",
-						"+ ChatActivity - ошибка соединения: " + e.getMessage());
+						"+ ChatActivity - РѕС€РёР±РєР° СЃРѕРµРґРёРЅРµРЅРёСЏ: " + e.getMessage());
 
 			} finally {
-				// закроем соединение
+				// Р·Р°РєСЂРѕРµРј СЃРѕРµРґРёРЅРµРЅРёРµ
 				conn.disconnect();
 			}
 			return res;
@@ -226,36 +226,36 @@ public class ChatActivity extends Activity {
 
 			try {
 				if (result == 200) {
-					Log.i("chat", "+ ChatActivity - сообщение успешно ушло.");
-					// сбросим набранный текст
+					Log.i("chat", "+ ChatActivity - СЃРѕРѕР±С‰РµРЅРёРµ СѓСЃРїРµС€РЅРѕ СѓС€Р»Рѕ.");
+					// СЃР±СЂРѕСЃРёРј РЅР°Р±СЂР°РЅРЅС‹Р№ С‚РµРєСЃС‚
 					et.setText("");
 				}
 			} catch (Exception e) {
-				Log.i("chat", "+ ChatActivity - ошибка передачи сообщения:\n"
+				Log.i("chat", "+ ChatActivity - РѕС€РёР±РєР° РїРµСЂРµРґР°С‡Рё СЃРѕРѕР±С‰РµРЅРёСЏ:\n"
 						+ e.getMessage());
 				Toast.makeText(getApplicationContext(),
-						"ошибка передачи сообщения", Toast.LENGTH_SHORT).show();
+						"РѕС€РёР±РєР° РїРµСЂРµРґР°С‡Рё СЃРѕРѕР±С‰РµРЅРёСЏ", Toast.LENGTH_SHORT).show();
 			} finally {
-				// активируем кнопку
+				// Р°РєС‚РёРІРёСЂСѓРµРј РєРЅРѕРїРєСѓ
 				bt.setEnabled(true);
 			}
 		}
 	}
 
-	// ресивер приёмник ждет сообщения от FoneService
-	// если сообщение пришло, значит есть новая запись в БД - обновим ListView
+	// СЂРµСЃРёРІРµСЂ РїСЂРёС‘РјРЅРёРє Р¶РґРµС‚ СЃРѕРѕР±С‰РµРЅРёСЏ РѕС‚ FoneService
+	// РµСЃР»Рё СЃРѕРѕР±С‰РµРЅРёРµ РїСЂРёС€Р»Рѕ, Р·РЅР°С‡РёС‚ РµСЃС‚СЊ РЅРѕРІР°СЏ Р·Р°РїРёСЃСЊ РІ Р‘Р” - РѕР±РЅРѕРІРёРј ListView
 	public class UpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Log.i("chat",
-					"+ ChatActivity - ресивер получил сообщение - обновим ListView");
+					"+ ChatActivity - СЂРµСЃРёРІРµСЂ РїРѕР»СѓС‡РёР» СЃРѕРѕР±С‰РµРЅРёРµ - РѕР±РЅРѕРІРёРј ListView");
 			create_lv();
 		}
 	}
 
-	// выходим из чата
+	// РІС‹С…РѕРґРёРј РёР· С‡Р°С‚Р°
 	public void onBackPressed() {
-		Log.i("chat", "+ ChatActivity - закрыт");
+		Log.i("chat", "+ ChatActivity - Р·Р°РєСЂС‹С‚");
 		unregisterReceiver(upd_res);
 		finish();
 	}
